@@ -14,7 +14,7 @@ func loadRoutes() *chi.Mux {
 	router.Use(middleware.Logger)
 
 	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Home page"))
+		w.Write([]byte("Home page\n"))
 	})
 
 	router.Route("/orders", loadOrderRoutes)
