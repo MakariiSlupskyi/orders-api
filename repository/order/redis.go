@@ -1,4 +1,4 @@
-package Order
+package order
 
 import (
 	"context"
@@ -77,6 +77,11 @@ func (r *RedisRepo) DeleteByID(ctx context.Context, id uint64) error {
 		return ErrNotExist
 	} else if err != nil {
 		return fmt.Errorf("get order: %w", err)
+	}
+
+	if err := txn.SRem(ctx, "orders", key).Err(); err != nil {
+		txn.Discard()
+		return fmt.Errorf("failed to remove from orders set: %w", err)
 	}
 
 	if _, err := txn.Exec(ctx); err != nil {
